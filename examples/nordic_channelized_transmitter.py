@@ -28,8 +28,8 @@ class top_block(gr.top_block):
         self.sample_rate = 4e6
 
         # Channel map
-        channel_count = 3
-        channel_map = [14, 18, 10]
+        channel_count = 1
+        channel_map = [1]
 
         # Data rate index
         dr = 2  # 2M
@@ -39,7 +39,6 @@ class top_block(gr.top_block):
         self.osmosdr_sink.set_sample_rate(self.sample_rate * channel_count)
         self.osmosdr_sink.set_center_freq(self.freq)
         self.osmosdr_sink.set_gain(self.gain)
-        self.osmosdr_sink.set_antenna('TX/RX')
 
         # PFB channelizer
         taps = firdes.low_pass_2(
@@ -107,13 +106,13 @@ def main():
 
     tb = top_block(args)
     tb.start()
-
+    
     # Transmit some packets, hopping between three channels
-    address = '\x11\x22\x11\x22\x11'
-    payload = '\x55\x44\x33\x22\x11'
+    address = '\xE2\x7B\x92\x81\x08'
+    payload = '\x00\xC2\x00\x00\x00\x10\x00\x00\x00\2E'
     sequence_number = 0
     while True:
-        for x in range(3):
+        for x in range(1):
             tb.nordictap_transmitter.transmit(
                 address, payload, x, sequence_number)
             sequence_number += 1

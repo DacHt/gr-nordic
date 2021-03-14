@@ -17,7 +17,7 @@ class top_block(gr.top_block):
 
         # SDR configuration
         self.freq = 2402e6
-        self.gain = 70
+        self.gain = 40
         self.symbol_rate = 2e6
         self.sample_rate = 4e6
 
@@ -26,7 +26,7 @@ class top_block(gr.top_block):
         self.osmosdr_source.set_sample_rate(self.sample_rate)
         self.osmosdr_source.set_center_freq(self.freq)
         self.osmosdr_source.set_gain(self.gain)
-        self.osmosdr_source.set_antenna('TX/RX')
+        #self.osmosdr_source.set_antenna('TX/RX')
 
         # Low pass filter
         self.lpf = filter.fir_filter_ccf(
@@ -76,7 +76,7 @@ class microsoft_nordictap_handler(gr.sync_block):
         thread.start_new_thread(self.tick, ())
 
         # Channels and channel groups
-        self.channels = range(2, 84)
+        self.channels = (5,8,14,17,32,35,41,44,62,65,71,74)
 
     # 10ms tick
     def tick(self):
@@ -94,8 +94,8 @@ class microsoft_nordictap_handler(gr.sync_block):
                 self.last_tune = time.time()
                 self.tb.set_channel(self.channels[self.last_ch])
 
-            # Wait 10ms
-            time.sleep(0.01)
+            # Wait 1s
+            time.sleep(1)
 
     def nordictap_handler(self, msg):
 

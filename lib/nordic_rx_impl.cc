@@ -122,7 +122,7 @@ namespace gr {
               socket.open(boost::asio::ip::udp::v4());
               socket.send_to(boost::asio::buffer(buffer, buffer_length), receiver_endpoint);
 
-              // Send the packet to nordictap_out
+              // Send the packet to packet
               message_port_pub(pmt::intern("nordictap_out"), pmt::init_u8vector(buffer_length, buffer));
 
               // Cleanup
